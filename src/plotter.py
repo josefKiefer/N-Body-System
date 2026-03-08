@@ -1,15 +1,31 @@
 import matplotlib.pyplot as plt
+from enum import StrEnum
 
-def plot_points(body1_history, body2_history, body1_name: str, body2_name: str):
-  x1_history, y1_history = list(zip(*body1_history))
-  x2_history, y2_history = list(zip(*body2_history))
+class Integrator(StrEnum):
+  EULER = "Euler"
+  VERLET = "Verlet"
 
-  fig, ax = plt.subplots()
-  ax.plot(x1_history, y1_history, label=body1_name)
-  ax.plot(x2_history, y2_history, label=body2_name)
-  ax.legend()
-  ax.scatter(x1_history[0], y1_history[0], marker="o")
-  ax.scatter(x2_history[0], y2_history[0], marker="o")
-  ax.axis("equal")
+class Plotter_2_Body:
+  def __init__(self, body1_name: str, body2_name: str):
+    self.fig, self.ax = plt.subplots()
+    self.ax.axis("equal")
+    self.body1_name = body1_name
+    self.body2_name = body2_name
 
-  fig.savefig(f"./output_models/{body1_name}-{body2_name}.png")
+  def plot_points(self, body1_history, body2_history, integrator: Integrator):
+    x1_history, y1_history = list(zip(*body1_history))
+    x2_history, y2_history = list(zip(*body2_history))
+
+    self.ax.plot(x1_history, y1_history, label=f"{self.body1_name} ({integrator})")
+    self.ax.plot(x2_history, y2_history, label=f"{self.body2_name} ({integrator})")
+    self.ax.scatter(x1_history[0], y1_history[0], marker="o")
+    self.ax.scatter(x2_history[0], y2_history[0], marker="o")
+
+
+  def save_figure(self):
+    file_path = f"./output_models/{self.body1_name}-{self.body2_name}.png"
+    
+    self.ax.legend()
+    self.fig.savefig(file_path)
+
+    print(f"Figure saved to {file_path}")
