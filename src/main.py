@@ -4,7 +4,7 @@ from euler_method import euler
 from plotter import plot_points
 from verlet_method import verlet
 
-file_name = "../input_data/sun_earth.json"
+file_name = "./input_data/sun_earth.json"
 
 one_year = 60 * 60 * 24 * 365;
 

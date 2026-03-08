@@ -12,4 +12,4 @@ def plot_points(body1_history, body2_history, body1_name: str, body2_name: str):
   ax.scatter(x2_history[0], y2_history[0], marker="o")
   ax.axis("equal")
 
-  fig.savefig(f"../output_models/{body1_name}-{body2_name}.png")
+  fig.savefig(f"./output_models/{body1_name}-{body2_name}.png")
