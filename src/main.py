@@ -4,6 +4,7 @@ from euler_method import euler
 from plotter import Plotter_2_Body, Integrator
 from verlet_method import verlet
 import copy
+from rk4_method import runge_kutta_4
 
 file_name = "./input_data/sun_earth.json"
 
@@ -16,13 +17,19 @@ def main():
         bodies_as_json = json.load(f)
         bodies = [VectorizedBody.from_dict(body) for body in bodies_as_json]
 
+    step_size = one_day * 21
+    total_time = one_year * 20
+
     plotter = Plotter_2_Body(bodies[0].name, bodies[1].name)
 
-    body1_positions, body2_positions = euler(one_day * 7, one_year * 5, copy.deepcopy(bodies[0]), copy.deepcopy(bodies[1]))
+    body1_positions, body2_positions = euler(step_size, total_time, copy.deepcopy(bodies[0]), copy.deepcopy(bodies[1]))
     plotter.plot_points(body1_positions, body2_positions, Integrator.EULER)
 
-    body1_positions, body2_positions = verlet(one_day * 7, one_year * 5, copy.deepcopy(bodies[0]), copy.deepcopy(bodies[1]))
+    body1_positions, body2_positions = verlet(step_size, total_time, copy.deepcopy(bodies[0]), copy.deepcopy(bodies[1]))
     plotter.plot_points(body1_positions, body2_positions, Integrator.VERLET)
+
+    body1_positions, body2_positions = runge_kutta_4(step_size, total_time, copy.deepcopy(bodies[0]), copy.deepcopy(bodies[1]))
+    plotter.plot_points(body1_positions, body2_positions, Integrator.RK4)
 
     plotter.save_figure()
 

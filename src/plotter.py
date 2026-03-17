@@ -4,6 +4,7 @@ from enum import StrEnum
 class Integrator(StrEnum):
   EULER = "Euler"
   VERLET = "Verlet"
+  RK4 = "RK4"
 
 class Plotter_2_Body:
   def __init__(self, body1_name: str, body2_name: str):
