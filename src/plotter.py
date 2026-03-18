@@ -2,6 +2,7 @@ import matplotlib.pyplot as plt
 from enum import StrEnum
 from models import BodyStepState
 from matplotlib.axes import Axes
+from matplotlib.animation import FuncAnimation
 
 class Integrator(StrEnum):
   EULER = "Euler"
@@ -49,3 +50,45 @@ class Plotter_2_Body:
     self.fig.savefig(file_path)
 
     print(f"Figure saved to {file_path}")
+
+
+  def animate(self, results: list[BodyStepState]):
+      # 1. Create empty plot objects before animation starts
+      body1_point, = self.ax_orbit.plot([], [], 'o', label=self.body1_name)
+      body2_point, = self.ax_orbit.plot([], [], 'o', label=self.body2_name)
+      
+      body1_trail, = self.ax_orbit.plot([], [], '-', alpha=0.3)
+      body2_trail, = self.ax_orbit.plot([], [], '-', alpha=0.3)
+
+      # 2. Set the axis limits based on all positions
+      all_x = [r.body1_pos[0] for r in results] + [r.body2_pos[0] for r in results]
+      all_y = [r.body1_pos[1] for r in results] + [r.body2_pos[1] for r in results]
+      self.ax_orbit.set_xlim(min(all_x), max(all_x))
+      self.ax_orbit.set_ylim(min(all_y), max(all_y))
+
+      # 3. Define the update function called each frame
+      def update(frame):
+          # Move the points
+          body1_point.set_data([results[frame].body1_pos[0]], [results[frame].body1_pos[1]])
+          body2_point.set_data([results[frame].body2_pos[0]], [results[frame].body2_pos[1]])
+          
+          # Draw the trail up to current frame
+          body1_trail.set_data(
+              [r.body1_pos[0] for r in results[:frame]],
+              [r.body1_pos[1] for r in results[:frame]]
+          )
+          body2_trail.set_data(
+              [r.body2_pos[0] for r in results[:frame]],
+              [r.body2_pos[1] for r in results[:frame]]
+          )
+          
+          return body1_point, body2_point, body1_trail, body2_trail
+
+      # 4. Create the animation
+      self.ani = FuncAnimation(
+          self.fig,
+          update,
+          frames=len(results),
+          interval=10,  # milliseconds between frames
+          blit=True     # only redraw what changed
+      )

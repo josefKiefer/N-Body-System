@@ -17,8 +17,8 @@ def main():
         bodies_as_json = json.load(f)
         bodies = [VectorizedBody.from_dict(body) for body in bodies_as_json]
 
-    step_size = one_day * 21
-    total_time = one_year * 20
+    step_size = one_day
+    total_time = one_year
 
     plotter = Plotter_2_Body(bodies[0].name, bodies[1].name)
 
@@ -28,8 +28,8 @@ def main():
     verlet_results = verlet(step_size, total_time, copy.deepcopy(bodies[0]), copy.deepcopy(bodies[1]))
     plotter.plot_points(verlet_results, Integrator.VERLET)
 
-    results = runge_kutta_4(step_size, total_time, copy.deepcopy(bodies[0]), copy.deepcopy(bodies[1]))
-    plotter.plot_points(results, Integrator.RK4)
+    rk4_results = runge_kutta_4(step_size, total_time, copy.deepcopy(bodies[0]), copy.deepcopy(bodies[1]))
+    plotter.plot_points(rk4_results, Integrator.RK4)
 
     plotter.save_figure()
 
