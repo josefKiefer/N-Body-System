@@ -31,3 +31,10 @@ def get_accelerations(body1: VectorizedBody, body2: VectorizedBody):
     force_on_1 = get_force(body1, body2)
     force_on_2 = -force_on_1
     return force_on_1 / body1.mass, force_on_2 / body2.mass
+
+def get_kinetic_energy(body: VectorizedBody) -> float:
+    return 0.5 * body.mass * np.linalg.norm(body.vel) ** 2
+
+def get_potential_energy(body1: VectorizedBody, body2: VectorizedBody):
+    separation_vector = body1.pos - body2.pos
+    return -(G * body1.mass * body2.mass) / np.linalg.norm(separation_vector)

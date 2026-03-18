@@ -80,3 +80,13 @@ class VectorizedBody:
       pos=np.array([data["x"], data["y"]], dtype=float),
       vel=np.array([data["vx"], data["vy"]])
     )
+  
+@dataclass
+class BodyStepState:
+  body1_pos: np.ndarray
+  body2_pos: np.ndarray
+
+  body1_ke: float
+  body2_ke: float
+
+  pot_energy: float

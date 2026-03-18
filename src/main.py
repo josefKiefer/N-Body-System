@@ -22,14 +22,14 @@ def main():
 
     plotter = Plotter_2_Body(bodies[0].name, bodies[1].name)
 
-    body1_positions, body2_positions = euler(step_size, total_time, copy.deepcopy(bodies[0]), copy.deepcopy(bodies[1]))
-    plotter.plot_points(body1_positions, body2_positions, Integrator.EULER)
+    euler_results = euler(step_size, total_time, copy.deepcopy(bodies[0]), copy.deepcopy(bodies[1]))
+    plotter.plot_points(euler_results, Integrator.EULER)
 
-    body1_positions, body2_positions = verlet(step_size, total_time, copy.deepcopy(bodies[0]), copy.deepcopy(bodies[1]))
-    plotter.plot_points(body1_positions, body2_positions, Integrator.VERLET)
+    verlet_results = verlet(step_size, total_time, copy.deepcopy(bodies[0]), copy.deepcopy(bodies[1]))
+    plotter.plot_points(verlet_results, Integrator.VERLET)
 
-    body1_positions, body2_positions = runge_kutta_4(step_size, total_time, copy.deepcopy(bodies[0]), copy.deepcopy(bodies[1]))
-    plotter.plot_points(body1_positions, body2_positions, Integrator.RK4)
+    results = runge_kutta_4(step_size, total_time, copy.deepcopy(bodies[0]), copy.deepcopy(bodies[1]))
+    plotter.plot_points(results, Integrator.RK4)
 
     plotter.save_figure()
 
